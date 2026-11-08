@@ -2,11 +2,9 @@ import { Router } from 'express';
 import Group from '../models/Group.js';
 import Student from '../models/Student.js';
 import Attendance from '../models/Attendance.js';
-import requireAuth from '../middleware/auth.js';
-
+import requireAuth, { requireRole } from '../middleware/auth.js';
 const router = Router();
-router.use(requireAuth);
-
+router.use(requireAuth, requireRole('tutor'));
 const STATUSES = ['present', 'absent', 'late'];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 

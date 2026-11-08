@@ -195,3 +195,32 @@ form.row input { flex: 1; min-width: 170px; width: auto; }
   .auth-form { align-items: flex-start; padding-top: 36px; }
   .user-name { display: none; }
 }
+/* Role toggle */
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--green-50); border: 1px solid var(--line); border-radius: 10px; padding: 4px; margin-bottom: 18px; }
+.seg button { background: transparent; color: var(--muted); padding: 9px 10px; }
+.seg button.active { background: #fff; color: var(--green-700); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+/* Links styled as buttons */
+a.btn { display: inline-block; text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: 10px; font-size: 14px; }
+a.btn.primary { background: var(--green-700); color: #fff; }
+a.btn.primary:hover { background: var(--green-800); }
+.plain-link { text-decoration: none; }
+.actions { display: flex; gap: 8px; margin-top: 8px; }
+.group .actions button { margin-top: 0; }
+
+.back { display: inline-block; margin-bottom: 14px; text-decoration: none; font-size: 14px; }
+.small { font-size: 13px; margin: 0; }
+
+/* Lists */
+.list { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+.list-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.list-row:last-child { border-bottom: 0; }
+.list-main { display: flex; align-items: center; gap: 12px; }
+.list-side { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.code { background: var(--yellow-100); color: #7a5500; font-weight: 700; letter-spacing: .06em; padding: 6px 10px; border-radius: 8px; }
+
+/* Attendance status */
+.status { font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 999px; }
+.status.present { background: var(--green-100); color: var(--green-800); }
+.status.late { background: var(--yellow-100); color: #8a6100; }
+.status.absent { background: #fbe3e0; color: var(--danger); }

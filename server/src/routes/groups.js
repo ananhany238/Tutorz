@@ -2,15 +2,22 @@ import { Router } from 'express';
 import Group from '../models/Group.js';
 import Student from '../models/Student.js';
 import Attendance from '../models/Attendance.js';
-import requireAuth from '../middleware/auth.js';
+import User from '../models/User.js';
+import requireAuth, { requireRole } from '../middleware/auth.js';
 import { pick } from '../utils/pick.js';
 
 const router = Router();
-router.use(requireAuth);
+router.use(requireAuth, requireRole('tutor'));
 
 router.get('/', async (req, res) => {
   const groups = await Group.find({ owner: req.userId }).sort({ createdAt: -1 });
   res.json(groups);
+});
+
+router.get('/:id', async (req, res) => {
+  const group = await Group.findOne({ _id: req.params.id, owner: req.userId });
+  if (!group) return res.status(404).json({ message: 'Group not found' });
+  res.json(group);
 });
 
 router.post('/', async (req, res) => {
@@ -38,6 +45,8 @@ router.delete('/:id', async (req, res) => {
   const group = await Group.findOneAndDelete({ _id: req.params.id, owner: req.userId });
   if (!group) return res.status(404).json({ message: 'Group not found' });
 
+  const students = await Student.find({ group: group._id }).select('_id');
+  await User.deleteMany({ student: { $in: students.map((s) => s._id) } });
   await Student.deleteMany({ group: group._id });
   await Attendance.deleteMany({ group: group._id });
 

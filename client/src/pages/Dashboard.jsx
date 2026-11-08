@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../api.js';
 import { useAuth } from '../AuthContext.jsx';
-import Logo from '../components/Logo.jsx';
+import TopBar from '../components/TopBar.jsx';
 
 const emptyForm = { name: '', subject: '', schedule: '' };
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [groups, setGroups] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [form, setForm] = useState(emptyForm);
@@ -59,16 +60,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <header className="topbar">
-        <div className="topbar-inner">
-          <Logo />
-          <div className="topbar-user">
-            <span className="avatar sm">{firstName[0].toUpperCase()}</span>
-            <span className="user-name">{user.name}</span>
-            <button className="ghost" onClick={logout}>Log out</button>
-          </div>
-        </div>
-      </header>
+      <TopBar />
 
       <div className="page">
         <section className="hero">
@@ -120,7 +112,10 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <p className="muted">{g.schedule || 'No schedule set'}</p>
-                  <button className="danger" onClick={() => removeGroup(g._id)}>Delete</button>
+                  <div className="actions">
+                    <Link className="btn primary" to={`/groups/${g._id}`}>Open</Link>
+                    <button className="danger" onClick={() => removeGroup(g._id)}>Delete</button>
+                  </div>
                 </article>
               ))}
             </div>

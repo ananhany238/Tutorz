@@ -7,6 +7,7 @@ const studentSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     phone: { type: String, trim: true, default: '' },
     notes: { type: String, trim: true, default: '' },
+    linkCode: { type: String, unique: true, sparse: true },
   },
   { timestamps: true }
 );

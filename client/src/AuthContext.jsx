@@ -27,8 +27,8 @@ export function AuthProvider({ children }) {
   const login = async (email, password) =>
     saveSession(await api('/auth/login', { method: 'POST', body: { email, password } }));
 
-  const register = async (name, email, password) =>
-    saveSession(await api('/auth/register', { method: 'POST', body: { name, email, password } }));
+  const register = async (payload) =>
+    saveSession(await api('/auth/register', { method: 'POST', body: payload }));
 
   const logout = () => {
     localStorage.removeItem('token');

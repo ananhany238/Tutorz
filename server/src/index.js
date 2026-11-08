@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js';
 import groupRoutes from './routes/groups.js';
 import studentRoutes from './routes/students.js';
 import attendanceRoutes from './routes/attendance.js';
+import familyRoutes from './routes/family.js';
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/attendance', attendanceRoutes);
+app.use('/api/family', familyRoutes);
+
 
 app.use((err, req, res, next) => {
   if (err.name === 'CastError') return res.status(400).json({ message: 'Invalid id' });
