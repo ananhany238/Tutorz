@@ -54,7 +54,7 @@ A screenshot of the QR code stops working after about a minute, and a scan only 
 ### Installation
 
 ```bash
-git clone https://github.com/[your-username]/tutorz.git
+git clone https://github.com/ananhany238/tutorz.git
 cd tutorz
 
 # Backend
