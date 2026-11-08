@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api.js';
 import TopBar from '../components/TopBar.jsx';
+import AttendancePanel from '../components/AttendancePanel.jsx';
 
 const emptyForm = { name: '', phone: '', notes: '' };
 
@@ -131,7 +132,9 @@ export default function GroupPage() {
               ))}
             </div>
           )}
-        </section>
+               </section>
+
+        {students.length > 0 && <AttendancePanel groupId={id} students={students} />}
       </div>
     </>
   );

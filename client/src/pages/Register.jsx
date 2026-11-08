@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
 import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function Register() {
   const { register } = useAuth();
-  const navigate = useNavigate();
   const [role, setRole] = useState('tutor');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +21,6 @@ export default function Register() {
     setBusy(true);
     try {
       await register({ name, email, password, role, ...(isFamily && { linkCode }) });
-      navigate('/');
     } catch (err) {
       setError(err.message);
     } finally {

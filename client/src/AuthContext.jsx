@@ -13,6 +13,14 @@ export function AuthProvider({ children }) {
       setLoading(false);
       return;
     }
+      // If another tab logs in or out, reload so this tab matches the new session.
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === 'token') window.location.reload();
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
     api('/auth/me')
       .then((data) => setUser(data.user))
       .catch(() => localStorage.removeItem('token'))

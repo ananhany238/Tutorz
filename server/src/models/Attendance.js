@@ -14,6 +14,12 @@ const attendanceSchema = new mongoose.Schema(
     group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group', required: true },
     date: { type: String, required: true, match: /^\d{4}-\d{2}-\d{2}$/ }, // YYYY-MM-DD
     records: [recordSchema],
+    checkin: {
+      open: { type: Boolean, default: false },
+      secret: { type: String, select: false },
+      openedAt: { type: Date },
+      lateAfterMinutes: { type: Number, default: 10 },
+    },
   },
   { timestamps: true }
 );
