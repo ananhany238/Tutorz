@@ -2,17 +2,14 @@
 
 Tutorz is a web app that helps private tutors and small teaching centers manage their classes. Tutors organize groups and students, take attendance in seconds with a QR code, and give parents and students a private view of their own attendance history.
 
-**Live demo:** [add the Vercel link here]
-**API:** [add the Render link here]/api/health
-
-> The backend runs on a free hosting plan, so the first request after a period of inactivity can take up to a minute while the server wakes up.
+**Live demo:** https://tutorz-yuzx.vercel.app
 
 **Demo accounts**
 
 | Role | Email | Password |
 |---|---|---|
-| Tutor | [demo tutor email] | [password] |
-| Student / parent | [demo family email] | [password] |
+| Tutor | demo.tutor@example.com | DemoTutor2026 |
+| Student / parent | demo.parent@example.com| DemoParent2026 |
 
 ## Features
 
@@ -122,14 +119,16 @@ tutorz/
         ├── middleware/  Authentication and role checks
         └── utils/       Link codes and check-in tokens
 ```
-
 ## Roadmap
 
-- Payments tracking per student
-- Notifications to parents when a student is absent
-- Location check for QR check-in
-- Automated tests
+  - Password recovery by email, and stronger password rules
+  - Validation of check-in date and time (for example, only allow check-in on the day of the session)
+  - Payments tracking per student
+  - Notifications to parents when a student is absent
+  - Location check for QR check-in
+  - Automated tests
+  - A shared rate-limit store, so limits work across serverless instances
 
 ## Author
 
-Built by anan hany - [GitHub profile link]
+Built by anan hany - https://github.com/ananhany238
