@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import { connectDb } from './db.js';
 import authRoutes from './routes/auth.js';
 import groupRoutes from './routes/groups.js';
 import studentRoutes from './routes/students.js';
@@ -14,6 +15,17 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json({ limit: '100kb' }));
+
+// Make sure the database is connected before handling any request (needed on serverless hosts).
+app.use(async (req, res, next) => {
+  try {
+    await connectDb();
+    next();
+  } catch (err) {
+    console.error('DB connection failed:', err.message);
+    res.status(500).json({ message: 'Database unavailable' });
+  }
+});
 
 // Only failed attempts count (wrong passwords, invalid link codes), so normal use is never blocked.
 const authLimiter = rateLimit({
