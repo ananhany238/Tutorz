@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
-import Login from './pages/login.jsx';
+import Login from "./pages/Login.jsx";
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import GroupPage from './pages/GroupPage.jsx';
