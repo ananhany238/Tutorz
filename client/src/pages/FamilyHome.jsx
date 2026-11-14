@@ -12,14 +12,27 @@ const formatDate = (iso) =>
     year: 'numeric',
   });
 
+const hostOf = (url) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+};
+
 export default function FamilyHome() {
   const [data, setData] = useState(null);
+  const [materials, setMaterials] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
     api('/family/me')
       .then(setData)
       .catch((err) => setError(err.message));
+
+    api('/family/materials')
+      .then(setMaterials)
+      .catch(() => setMaterials([]));
   }, []);
 
   return (
@@ -58,6 +71,28 @@ export default function FamilyHome() {
                 <span className="stat-label">Absent</span>
               </div>
             </section>
+
+            <h2 className="section-title">Class materials</h2>
+
+            {materials.length === 0 ? (
+              <div className="empty">
+                <p>No materials shared yet.</p>
+                <p className="muted">Your tutor's notes and links will appear here.</p>
+              </div>
+            ) : (
+              <div className="list">
+                {materials.map((m) => (
+                  <div className="list-row" key={m._id}>
+                    <div>
+                      <a className="material-title" href={m.url} target="_blank" rel="noopener noreferrer">{m.title}</a>
+                      <p className="muted small">
+                        {hostOf(m.url)}{m.note ? ` · ${m.note}` : ''}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <h2 className="section-title">Attendance history</h2>
 

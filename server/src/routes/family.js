@@ -4,6 +4,7 @@ import Attendance from '../models/Attendance.js';
 import User from '../models/User.js';
 import requireAuth, { requireRole } from '../middleware/auth.js';
 import { isValidToken } from '../utils/checkinToken.js';
+import Material from '../models/Material.js';
 
 const router = Router();
 router.use(requireAuth, requireRole('family'));
@@ -95,5 +96,15 @@ router.post('/checkin', async (req, res) => {
   }
 
   res.json({ already: false, status, date: session.date });
+});
+router.get('/materials', async (req, res) => {
+  const user = await User.findById(req.userId);
+  const student = user ? await Student.findById(user.student) : null;
+  if (!student) return res.status(404).json({ message: 'Student record no longer exists' });
+
+  const items = await Material.find({ group: student.group })
+    .sort({ createdAt: -1 })
+    .select('title url note createdAt');
+  res.json(items);
 });
 export default router;

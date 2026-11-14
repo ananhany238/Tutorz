@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api } from '../api.js';
 import TopBar from '../components/TopBar.jsx';
 import AttendancePanel from '../components/AttendancePanel.jsx';
+import MaterialsPanel from '../components/MaterialsPanel.jsx';
 
 const emptyForm = { name: '', phone: '', notes: '' };
 
@@ -135,7 +136,8 @@ export default function GroupPage() {
                </section>
 
         {students.length > 0 && <AttendancePanel groupId={id} students={students} />}
-      </div>
+
+        <MaterialsPanel groupId={id} />      </div>
     </>
   );
 }

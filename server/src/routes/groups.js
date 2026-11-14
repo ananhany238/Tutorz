@@ -5,6 +5,7 @@ import Attendance from '../models/Attendance.js';
 import User from '../models/User.js';
 import requireAuth, { requireRole } from '../middleware/auth.js';
 import { pick } from '../utils/pick.js';
+import Material from '../models/Material.js';
 
 const router = Router();
 router.use(requireAuth, requireRole('tutor'));
@@ -49,7 +50,7 @@ router.delete('/:id', async (req, res) => {
   await User.deleteMany({ student: { $in: students.map((s) => s._id) } });
   await Student.deleteMany({ group: group._id });
   await Attendance.deleteMany({ group: group._id });
-
+  await Material.deleteMany({ group: group._id });
   res.json({ message: 'Group deleted' });
 });
 

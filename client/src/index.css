@@ -251,3 +251,6 @@ a.btn.primary:hover { background: var(--green-800); }
 .rules li::before { content: '\25CB'; margin-right: 6px; }
 .rules li.ok { color: var(--green-700); font-weight: 600; }
 .rules li.ok::before { content: '\2713'; }
+/* Materials */
+.material-title { font-weight: 700; text-decoration: none; }
+.material-title:hover { text-decoration: underline; }
