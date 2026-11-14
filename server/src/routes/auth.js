@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import Student from '../models/Student.js';
 import requireAuth from '../middleware/auth.js';
+import { passwordProblem } from '../utils/password.js';
 
 const router = Router();
 
@@ -15,9 +16,13 @@ const publicUser = (u) => ({ id: u._id, name: u.name, email: u.email, role: u.ro
 router.post('/register', async (req, res) => {
   const { name, email, password, role = 'tutor', linkCode } = req.body;
 
-  if (!name || !email || !password || password.length < 6) {
-    return res.status(400).json({ message: 'Name, email and a password of 6+ characters are required' });
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'Name, email and password are required' });
   }
+
+  const problem = passwordProblem(password, { email });
+  if (problem) return res.status(400).json({ message: problem });
+
   if (!['tutor', 'family'].includes(role)) {
     return res.status(400).json({ message: 'Invalid role' });
   }

@@ -246,3 +246,8 @@ a.btn.primary:hover { background: var(--green-800); }
 .big-icon.ok { background: var(--green-100); color: var(--green-700); }
 .big-icon.warn { background: var(--yellow-100); color: #8a6100; }
 .big-icon.fail { background: #fbe3e0; color: var(--danger); }
+/* Password checklist */
+.rules { list-style: none; margin: -4px 0 4px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 13px; color: var(--muted); }
+.rules li::before { content: '\25CB'; margin-right: 6px; }
+.rules li.ok { color: var(--green-700); font-weight: 600; }
+.rules li.ok::before { content: '\2713'; }

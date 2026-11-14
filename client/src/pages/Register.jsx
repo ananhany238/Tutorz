@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
 import AuthLayout from '../components/AuthLayout.jsx';
+import PasswordChecklist from '../components/PasswordChecklist.jsx';
+import { isStrong } from '../passwordRules.js';
 
 export default function Register() {
   const { register } = useAuth();
@@ -50,8 +52,9 @@ export default function Register() {
         </label>
         <label className="field">
           <span>Password</span>
-          <input type="password" placeholder="At least 6 characters" minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" placeholder="Create a strong password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
+        <PasswordChecklist password={password} />
         {isFamily && (
           <label className="field">
             <span>Student link code</span>
@@ -59,7 +62,9 @@ export default function Register() {
           </label>
         )}
         {error && <p className="error">{error}</p>}
-        <button className="primary" disabled={busy}>{busy ? 'Creating account...' : 'Create account'}</button>
+        <button className="primary" disabled={busy || !isStrong(password)}>
+          {busy ? 'Creating account...' : 'Create account'}
+        </button>
       </form>
     </AuthLayout>
   );
