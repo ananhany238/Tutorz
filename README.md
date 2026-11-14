@@ -1,24 +1,27 @@
 # Tutorz
 
-Tutorz is a web app that helps private tutors and small teaching centers manage their classes. Tutors organize groups and students, take attendance in seconds with a QR code, and give parents and students a private view of their own attendance history.
+Tutorz is a web app that helps private tutors and small teaching centers manage their classes. Tutors organize groups and students, take attendance in seconds with a QR code, share class materials, and give parents and students a private view of their own attendance history.
 
 **Live demo:** https://tutorz-yuzx.vercel.app
+**API health check:** https://tutorz-two.vercel.app/api/health
 
 **Demo accounts**
 
 | Role | Email | Password |
 |---|---|---|
 | Tutor | demo.tutor@example.com | DemoTutor2026 |
-| Student / parent | demo.parent@example.com| DemoParent2026 |
+| Student / parent | demo.parent@example.com | DemoParent2026 |
 
 ## Features
 
 - Secure authentication with JWT and hashed passwords (bcrypt)
+- Strong password rules, enforced on both the client and the server
 - Two roles with separate permissions: **tutor** and **student / parent**
 - Tutors manage groups and students (full CRUD)
 - **QR check-in:** the tutor starts a session, students scan a QR code that rotates every 30 seconds, and attendance is recorded automatically as present or late. When the session is closed, everyone who did not scan is marked absent.
 - Manual attendance sheet for exceptions
-- Parents and students sign up with a private per-student link code and see only that student's attendance and rate
+- **Class materials:** tutors share links (notes, videos, files) with each group, and the students and parents of that group can open them
+- Parents and students sign up with a private per-student link code and see only that student's attendance, rate and materials
 - Responsive interface that works on phones
 
 ## Tech stack
@@ -29,7 +32,8 @@ Tutorz is a web app that helps private tutors and small teaching centers manage 
 | Backend | Node.js, Express |
 | Database | MongoDB with Mongoose |
 | Auth | JSON Web Tokens, bcryptjs |
-| Security | Helmet, rate limiting, role-based access control |
+| Security | Helmet, rate limiting, role-based access control, password strength rules |
+| Hosting | Vercel (frontend and serverless API), MongoDB Atlas |
 
 ## How the QR check-in works
 
@@ -86,6 +90,15 @@ The API runs on `http://localhost:5000` and the app on `http://localhost:5173`.
 |---|---|
 | `VITE_API_URL` | Base URL of the API, for example `http://localhost:5000/api` |
 
+## Deployment
+
+The app runs as two Vercel projects created from the same repository:
+
+- **API:** root directory `server`. Express runs as a serverless function through `server/api/index.js`. It needs the `MONGO_URI`, `JWT_SECRET` and `CLIENT_URL` variables.
+- **Frontend:** root directory `client`, built with Vite. It needs `VITE_API_URL`.
+
+The database is a free MongoDB Atlas cluster.
+
 ## API overview
 
 All routes except register and login require an `Authorization: Bearer <token>` header.
@@ -104,7 +117,10 @@ All routes except register and login require an `Authorization: Bearer <token>` 
 | POST | `/api/attendance/checkin/start` | tutor | Open a QR check-in session |
 | GET | `/api/attendance/checkin/:id/token` | tutor | Current QR token |
 | POST | `/api/attendance/checkin/:id/close` | tutor | Close the session and mark absences |
+| GET, POST | `/api/materials` | tutor | List (filter with `?group=`) and add class materials |
+| DELETE | `/api/materials/:id` | tutor | Remove a material |
 | GET | `/api/family/me` | family | Student profile, summary and attendance history |
+| GET | `/api/family/materials` | family | Materials shared with the student's group |
 | POST | `/api/family/checkin` | family | Check in using a QR link |
 
 ## Project structure
@@ -113,22 +129,25 @@ All routes except register and login require an `Authorization: Bearer <token>` 
 tutorz/
 ├── client/              React app (pages, components, auth context)
 └── server/
+    ├── api/             Serverless entry point for Vercel
     └── src/
         ├── models/      Mongoose schemas
         ├── routes/      Express routers
         ├── middleware/  Authentication and role checks
-        └── utils/       Link codes and check-in tokens
+        └── utils/       Link codes, check-in tokens, password rules
 ```
+
 ## Roadmap
 
-  - Password recovery by email, and stronger password rules
-  - Validation of check-in date and time (for example, only allow check-in on the day of the session)
-  - Payments tracking per student
-  - Notifications to parents when a student is absent
-  - Location check for QR check-in
-  - Automated tests
-  - A shared rate-limit store, so limits work across serverless instances
+- Password recovery by email
+- Validation of check-in date and time (for example, only allow check-in on the day of the session)
+- File uploads for class materials (currently links)
+- Payments tracking per student
+- Notifications to parents when a student is absent
+- Location check for QR check-in
+- Automated tests
+- A shared rate-limit store, so limits work across serverless instances
 
 ## Author
 
-Built by anan hany - https://github.com/ananhany238
+Built by Anan Hany - https://github.com/ananhany238
